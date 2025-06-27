@@ -14,7 +14,7 @@ func main() {
 	// 设置 MongoDB 连接
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017/?replicaSet=rs0/?replicaSet=rs0"))
 	if err != nil {
 		panic(err)
 	}
@@ -45,7 +45,7 @@ func main() {
 	fmt.Printf("成功插入用户，ID: %v\n", result.InsertedID)
 }
 
-// mongosh mongodb://localhost:27017/testdb
+// mongosh mongodb://localhost:27017/?replicaSet=rs0/testdb
 // show collections
 // db.users.drop()
 // db.users.insertOne({

@@ -15,7 +15,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017/?replicaSet=rs0"))
 	if err != nil {
 		panic(err)
 	}
@@ -47,7 +47,7 @@ func main() {
 	fmt.Printf("匹配到 %d 条，实际更新 %d 条\n", result.MatchedCount, result.ModifiedCount)
 }
 
-// mongosh mongodb://localhost:27017/testdb
+// mongosh mongodb://localhost:27017/?replicaSet=rs0/testdb
 // show collections
 // db.users.updateMany(
 //  { "age": {"$lt": 30} },

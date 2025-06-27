@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/guobinqiu/mongo-demo/seed"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -23,22 +22,11 @@ func main() {
 
 	collection := client.Database("testdb").Collection("users")
 
-	// 确保有数据
-	if err := seed.SeedUsers(ctx, collection); err != nil {
-		panic(err)
-	}
-
-	// 删除条件：年龄等于25的用户
-	filter := bson.M{"age": bson.M{"$eq": 25}}
-
-	result, err := collection.DeleteOne(ctx, filter)
+	// 空条件表示统计所有文档
+	count, err := collection.CountDocuments(ctx, bson.M{})
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("删除了 %d 条记录\n", result.DeletedCount)
+	fmt.Printf("用户总数: %d\n", count)
 }
-
-// mongosh mongodb://localhost:27017/?replicaSet=rs0/testdb
-// show collections
-// db.users.deleteOne({"age": {"$eq": 25}})
