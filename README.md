@@ -47,18 +47,12 @@
 | 根据字段查询 | `db.users.find({age: {$gt: 25}})`                                                              |
 | 模糊查询     | `db.users.find({name: /pattern/})`                                                             |
 | 插入文档     | `db.users.insertOne({name: "John", age: 30})`                                                  |
+| 插入多个文档 | `db.users.insertMany([{name: "John", age: 30}, {name: "Jane", age: 25}])`                      |
 | 更新文档     | `db.users.updateOne({_id: ObjectId("id")}, {$set: {age: 31}})`                                 |
+| 更新多个文档 | `db.users.updateMany({age: {$gt: 25}}, {$set: {status: "senior"}})`                            |
 | 删除文档     | `db.users.deleteOne({_id: ObjectId("id")})`                                                    |
+| 删除多个文档 | `db.users.deleteMany({status: "inactive"})`                                                    |
 | 聚合查询     | `db.users.aggregate([{$match: {age: {$gt: 25}}}, {$group: {_id: "$role", count: {$sum: 1}}}])` |
 | 创建索引     | `db.users.createIndex({name: 1})`                                                              |
-| 自动事务     | `session.withTransaction(() => {                                                               |
-  db.users.insertOne({...}, {session});
-  return true;
-});` |
-| 手动事务 | `session.startTransaction();
-try {
-  db.users.insertOne({...}, {session});
-  session.commitTransaction();
-} catch(e) {
-  session.abortTransaction();
-}` |
+| 创建多个索引 | `db.users.createIndexes([{name: 1}, {age: -1}])`                                               |
+| 文档计数     | `db.users.countDocuments({age: {$gt: 25}})`                                                    |
