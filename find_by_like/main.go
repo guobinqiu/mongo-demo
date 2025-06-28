@@ -5,25 +5,12 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/guobinqiu/mongo-demo/model"
 	"github.com/guobinqiu/mongo-demo/seed"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
-
-type Role struct {
-	Name        string   `bson:"name" json:"name"`
-	Permissions []string `bson:"permissions" json:"permissions"`
-}
-
-type User struct {
-	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-	Username string             `bson:"username" json:"username"`
-	Email    string             `bson:"email" json:"email"`
-	Age      int                `bson:"age" json:"age"`
-	Role     Role               `bson:"role" json:"role"`
-}
 
 func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -57,7 +44,7 @@ func main() {
 	fmt.Printf("查询条件: %v\n", filter)
 	fmt.Println("匹配用户名包含 'a' 的用户：")
 	for cursor.Next(ctx) {
-		var user User
+		var user model.User
 		if err := cursor.Decode(&user); err != nil {
 			panic(err)
 		}
